@@ -50,50 +50,42 @@ var fight = function(enemy) {
             break;
         }
 
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+        //generate random damage value based on player's attack power
+        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+        enemy.health = Math.max(0, enemy.health - damage);
+        console.log(
+            playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.'
+        );
+        // check enemy's health
+        if (enemy.health <= 0) {
+            window.alert(enemy.name + " has died!");
 
-        //repeat and execute as long as the enemy-robot is alive
-        while (playerInfo.health > 0 && enemy.health > 0) {
-            fightOrSkip(); // <---- Replace code with this function call
-            var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+            //award player money for winning
+            playerInfo.money = playerInfo.money + 20;
+
+            //leave while () loop since enemy is dead
+            //        break;
+        } else {
+            window.alert(enemy.name + " still has " + enemy.health + " health left.");
         }
-    }
 
-    //generate random damage value based on player's attack power
-    var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-    enemy.health = Math.max(0, enemy.health - damage);
-    console.log(
-        playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.'
-    );
-    // check enemy's health
-    if (enemy.health <= 0) {
-        window.alert(enemy.name + " has died!");
+        //remove player's health by subtracting amount set in enemy attack variable
+        var damage = randomNumber(enemy.attack - 3, enemy.attack);
 
-        //award player money for winning
-        playerInfo.money = playerInfo.money + 20;
+        playerInfo.health = Math.max(0, playerInfo.health - damage);
 
-        //leave while () loop since enemy is dead
-        //        break;
-    } else {
-        window.alert(enemy.name + " still has " + enemy.health + " health left.");
-    }
+        console.log(
+            enemy.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerInfo.health + ' health remaining.'
+        );
 
-    //remove player's health by subtracting amount set in enemy attack variable
-    var damage = randomNumber(enemy.attack - 3, enemy.attack);
-
-    playerInfo.health = Math.max(0, playerInfo.health - damage);
-
-    console.log(
-        enemy.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerInfo.health + ' health remaining.'
-    );
-
-    //check players health
-    if (playerInfo.health <= 0) {
-        //let player know what round they are in, remember that the arrays start at 0 so it needs to have 1 added to it
-        window.alert(playerInfo.name + 'has died!');
-        //        break;
-    } else {
-        window.alert(playerInfo.name + ' still has ' + playerInfo.health + 'health left.');
+        //check players health
+        if (playerInfo.health <= 0) {
+            //let player know what round they are in, remember that the arrays start at 0 so it needs to have 1 added to it
+            window.alert(playerInfo.name + ' has died!');
+            //        break;
+        } else {
+            window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
+        }
     }
 };
 
@@ -167,24 +159,23 @@ var endGame = function() {
 //SHOP FUNCTION!!!
 var shop = function() {
     var shopOptionPrompt = window.prompt(
-        'Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter one "REFILL", "UPGRADE", or "LEAVE" to make a choice.'
+        'Would you like to REFILL your health, UPGRADE your attack, or LEAVE the store? Please enter 1 for REFILL, 2 for UPGRADE, or 3 for LEAVE.'
     );
-    //use switch to carry out action
+
+    shopOptionPrompt = parseInt(shopOptionPrompt);
+    // use switch case to carry out action
     switch (shopOptionPrompt) {
-        case "REFILL": //new case
-        case "refill":
+        case 1:
             playerInfo.refillHealth();
             break;
-        case "UPGRADE":
-        case "upgrade": //new case
+        case 2:
             playerInfo.upgradeAttack();
             break;
-        case "LEAVE": //new case
-        case "leave":
+        case 3:
             window.alert("Leaving the store.");
             break;
         default:
-            window.alert("you did not pick a valid option. Try again.");
+            window.alert("You did not pick a valid option. Try again.");
             shop();
             break;
     };
