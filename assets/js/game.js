@@ -79,7 +79,6 @@ var startGame = function() {
         if (playerInfo.health > 0) {
             // let player know what round they are in, remember that arrays start at 0 so it needs to have 1 added to it
             window.alert('Welcome to Robot Gladiators! Round ' + (i + 1));
-            debugger;
 
             // pick new enemy to fight based on the index of the enemyInfo array
             var pickedEnemyObj = enemyInfo[i];
@@ -166,9 +165,21 @@ var shop = function() {
 //END GAME FUNCTIONS!!! 
 //function to end the entire game
 
-//in startGame() player info
+// function to set name
+var getPlayerName = function() {
+    var name = "";
+
+    while (name === "" || name === null) {
+        name = prompt("What is your robot's name?");
+    }
+
+    console.log("Your robot's name is " + name);
+    return name;
+};
+
+//PLAYER INFO OBJECT INITIALIZATION!!! in start() game
 var playerInfo = {
-    name: window.prompt("what is your robot's name?"),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
